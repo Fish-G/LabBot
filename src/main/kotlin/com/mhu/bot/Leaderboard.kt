@@ -13,14 +13,14 @@ class Database {
     }
 
     fun loadLeaderboard() {
-        val f = File("C:\\Users\\Marco Hu\\IdeaProjects\\Lab_Door_Status_Bot\\src\\main\\resources\\leaderboard.txt").forEachLine {
+        val f = File("src/main/resources/leaderboard.txt").forEachLine {
             val s = it.split(",")
             leaderboards[s[0]] = mutableListOf(s[1].toInt(), s[2].toInt())
         }
     }
 
     fun saveLeaderboard() {
-        File("C:\\Users\\Marco Hu\\IdeaProjects\\Lab_Door_Status_Bot\\src\\main\\resources\\leaderboard.txt").printWriter().use {
+        File("src/main/resources/leaderboard.txt").printWriter().use {
             leaderboards.entries.forEach{ (k,v)->it.println("$k,${v[0]},${v[1]}")}
         }
     }

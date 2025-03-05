@@ -1,5 +1,6 @@
 package com.mhu.bot
 
+import com.fazecast.jSerialComm.SerialPort
 import commands.CommandManager
 import io.github.cdimascio.dotenv.Dotenv
 import kotlinx.coroutines.*
@@ -9,6 +10,7 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import java.time.Duration
+import java.util.*
 
 class LabBot {
     private val config: Dotenv = Dotenv.configure().load()
@@ -19,16 +21,36 @@ class LabBot {
         api.addEventListener(CommandManager(leaderboard), EventListener(leaderboard))
         //api.presence.activity = Activity.playing("VEX U HIGH STAKES")
 
+
+        val comPort = SerialPort.getCommPorts()[2]
+        comPort.openPort()
         //launch door status detector
-        val doorStatus = launch {doorStatus()}
-        val leaderboardSaver = launch {autosaveLeaderboard(Duration.ofDays(1))}
+        val doorStatus = launch {doorStatus(api,comPort)}
+        val leaderboardSaver = launch { autosaveLeaderboard(Duration.ofDays(1)) }
 
         println("bot ready")
 
+
     }
 
-    private suspend fun doorStatus() = coroutineScope{
+    private suspend fun doorStatus(api: JDA, port:SerialPort) = coroutineScope {
+        var state = false
 
+        while (true) {
+            if (port.bytesAvailable() >0) {
+                var buffer:ByteArray = ByteArray(3)
+                port.readBytes(buffer,3)
+                val output = String(buffer, Charsets.US_ASCII)[0]
+                println(output)
+                if (output == '1' && !state) { // 0 closed
+                    api.presence.activity = Activity.customStatus("DOOR OPEN")
+                    state = true
+                } else if (output == '0' && state) {
+                    api.presence.activity = Activity.customStatus("DOOR CLOSED")
+                    state = false
+                }
+            }
+        }
     }
 
     private suspend fun autosaveLeaderboard(duration: Duration) {
@@ -36,13 +58,11 @@ class LabBot {
             leaderboard.saveLeaderboard()
             println("leaderboard saved")
             delay(duration)
-
         }
     }
-
 }
 
-fun main(){
+fun main() {
     LabBot().run()
     println()
 }
