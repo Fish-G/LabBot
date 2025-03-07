@@ -18,12 +18,16 @@ class LabBot {
     fun run() = runBlocking {
 
         val api: JDA = JDABuilder.createDefault(config.get("TOKEN")).build()
-        api.addEventListener(CommandManager(leaderboard), EventListener(leaderboard))
+        api.addEventListener(CommandManager(leaderboard,api), EventListener(leaderboard))
         //api.presence.activity = Activity.playing("VEX U HIGH STAKES")
 
+        println("ports: ")
+        SerialPort.getCommPorts().forEach{println(it)}
 
-        val comPort = SerialPort.getCommPorts()[2]
+        val comPort = SerialPort.getCommPorts()[0]
         comPort.openPort()
+
+
         //launch door status detector
         val doorStatus = launch {doorStatus(api,comPort)}
         val leaderboardSaver = launch { autosaveLeaderboard(Duration.ofDays(1)) }

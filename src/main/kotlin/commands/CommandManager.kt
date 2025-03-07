@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.interactions.commands.build.CommandData
 import net.dv8tion.jda.api.interactions.commands.build.Commands
 
-class CommandManager(val leaderboard: Database) : ListenerAdapter() {
+class CommandManager(val leaderboard: Database, val api:JDA) : ListenerAdapter() {
     override fun onGuildMemberJoin(event: GuildMemberJoinEvent) {
 
     }
@@ -42,16 +42,16 @@ class CommandManager(val leaderboard: Database) : ListenerAdapter() {
     }
 
     fun displayWebsite(event: SlashCommandInteractionEvent) {
-        event.reply("vex website is : https://www.google.com/").queue()
+        event.reply("vex website is : https://www.scarrobotics.com/").queue()
     }
 
     fun fireLeaderboard(event: SlashCommandInteractionEvent) {
-        val s = leaderboard.leaderboards.entries.sortedByDescending { (k, v) -> v[0] }.joinToString { (k, v) -> "${event.jda.getUserById(k)!!.effectiveName} : ${v[1]}\n" }
+        val s = leaderboard.leaderboards.entries.sortedByDescending { (k, v) -> v[0] }.joinToString("") { (k, v) -> "${api.retrieveUserById(k).complete().effectiveName} : ${v[1]}\n" }
         event.reply(s).queue()
     }
 
     fun skullLeaderboard(event: SlashCommandInteractionEvent) {
-        val s = leaderboard.leaderboards.entries.sortedByDescending { (k, v) -> v[1] }.joinToString { (k, v) -> "${event.jda.getUserById(k)!!.effectiveName} : ${v[1]}\n" }
+        val s = leaderboard.leaderboards.entries.sortedByDescending { (k, v) -> v[1] }.joinToString("") { (k, v) -> "${api.retrieveUserById(k).complete().effectiveName} : ${v[1]}\n" }
         event.reply(s).queue()
     }
 }
