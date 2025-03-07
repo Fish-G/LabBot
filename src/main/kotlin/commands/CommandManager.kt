@@ -46,7 +46,7 @@ class CommandManager(val leaderboard: Database, val api:JDA) : ListenerAdapter()
     }
 
     fun fireLeaderboard(event: SlashCommandInteractionEvent) {
-        val s = leaderboard.leaderboards.entries.sortedByDescending { (k, v) -> v[0] }.joinToString("") { (k, v) -> "${api.retrieveUserById(k).complete().effectiveName} : ${v[1]}\n" }
+        val s = leaderboard.leaderboards.entries.sortedByDescending { (k, v) -> v[0] }.joinToString("") { (k, v) -> "${api.retrieveUserById(k).complete().effectiveName} : ${v[0]}\n" }
         event.reply(s).queue()
     }
 
