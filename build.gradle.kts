@@ -6,7 +6,7 @@ plugins {
 
 application.mainClass = "com.mhu.bot.LabBotKt"
 group = "org.example"
-version = "3.1"
+version = "4.0"
 
 val jdaVersion = "5.2.2"
 
@@ -28,8 +28,8 @@ tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
     options.isIncremental = true
 
-    sourceCompatibility = "17"
-    options.release = 17
+    sourceCompatibility = "20"
+    options.release = 20
 }
 
 tasks.withType<Jar> {
