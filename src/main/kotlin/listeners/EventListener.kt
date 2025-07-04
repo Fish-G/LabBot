@@ -5,7 +5,6 @@ import com.mhu.bot.EmoteType
 import com.mhu.bot.GLOBALVAR
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
-import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEmojiEvent
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 
@@ -36,9 +35,9 @@ class EventListener(val leaderboard: Database) : ListenerAdapter() {
 
     override fun onGuildMemberRoleAdd(event: GuildMemberRoleAddEvent) {
         println("onGuildMemeberRoleAdd event trigger")
-        if (GLOBALVAR.VERIFIED_ROLE_ID in event.roles.map {it.id}.toList()) {
+        if (GLOBALVAR.VEXU_VERIFIED_ROLE_ID in event.roles.map {it.id}.toList()) {
             event.member.user.openPrivateChannel().flatMap { channel -> channel.sendMessage(GLOBALVAR.welcomeMessage(event.member.asMention)) }.queue()
-            event.guild.getTextChannelById(GLOBALVAR.IEEE_GENERAL_ID)!!.sendMessage(GLOBALVAR.welcomeMessage(event.member.asMention)).queue()
+            event.guild.getTextChannelById(GLOBALVAR.VEXU_GENERAL_ID)!!.sendMessage(GLOBALVAR.welcomeMessage(event.member.asMention)).queue()
         }
     }
 }

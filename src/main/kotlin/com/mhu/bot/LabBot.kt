@@ -13,7 +13,6 @@ import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.MemberCachePolicy
 import java.lang.Exception
 import java.time.Duration
-import java.util.*
 
 class SerialPortNotFoundException : Exception("SerialPort Not Found")
 
@@ -32,7 +31,7 @@ class LabBot {
         //api.presence.activity = Activity.playing("VEX U HIGH STAKES")
         api.awaitReady()
         //Load Member Caches
-        api.getGuildById(GLOBALVAR.IEEE_GUILD_ID)!!.loadMembers()
+        api.getGuildById(GLOBALVAR.VEXU_GUILD_ID)!!.loadMembers()
 
         println("ports: ")
         try {
