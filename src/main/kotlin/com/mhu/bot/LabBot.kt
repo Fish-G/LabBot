@@ -26,7 +26,7 @@ class LabBot {
             .setMemberCachePolicy(MemberCachePolicy.ALL)
             .build()
 
-        api.addEventListener(CommandManager(leaderboard, api), EventListener(leaderboard))
+        api.addEventListener(CommandManager(leaderboard, api), EventListener(leaderboard, api))
 
         //api.presence.activity = Activity.playing("VEX U HIGH STAKES")
         api.awaitReady()
