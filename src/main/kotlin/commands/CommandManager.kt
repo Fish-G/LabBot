@@ -29,7 +29,7 @@ class CommandManager(val leaderboard: Database, val api:JDA) : ListenerAdapter()
         commandData.add(Commands.slash("saveleaderboard", "save leaderboards"))
         commandData.add(Commands.slash("verify", "Submit a verification request for Rutgers VEX U")
             .addOption(OptionType.STRING,"name","Please write your name",true)
-            .addOption(OptionType.USER,"tag","Your discord tag, ie @RutgersIEEELabBot",true)
+            .addOption(OptionType.STRING, "netid", "Your Rutgers netid",true)
         )
         event.guild.updateCommands().addCommands(commandData).queue()
     }
@@ -66,7 +66,8 @@ class CommandManager(val leaderboard: Database, val api:JDA) : ListenerAdapter()
     fun verification(event: SlashCommandInteractionEvent) {
         event.reply(GLOBALVAR.verificationPendingMessage(event.user.asMention)).setEphemeral(true).queue()
         event.user.openPrivateChannel().flatMap { channel -> channel.sendMessage(GLOBALVAR.verificationPendingMessage(event.user.asMention)) }.queue()
-        event.guild!!.getTextChannelById(GLOBALVAR.VEXU_VERIFY_APPROVE_CHANNEL)!!.sendMessage("${event.getOption("name")!!.asString} with handle ${event.getOption("tag")!!.asMember!!.asMention} requests verification")
+        event.guild!!.getTextChannelById(GLOBALVAR.VEXU_VERIFY_APPROVE_CHANNEL)!!
+            .sendMessage("${event.getOption("name")!!.asString}, netid ${event.getOption("netid")!!.asString} with handle ${event.user.asMention} requests verification")
             .addActionRow(
                 Button.success("approve",Emoji.fromUnicode("U+2705")),
                 Button.danger("deny", Emoji.fromUnicode("U+274E"))

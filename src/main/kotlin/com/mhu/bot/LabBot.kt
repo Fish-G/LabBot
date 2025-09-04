@@ -18,7 +18,7 @@ class SerialPortNotFoundException : Exception("SerialPort Not Found")
 
 class LabBot {
     private val config: Dotenv = Dotenv.configure().load()
-    private val leaderboard = Database()
+    private val leaderboard = Database().also { it.loadLeaderboard() }
     fun run() = runBlocking {
 
         val api: JDA = JDABuilder.createDefault(config.get("TOKEN"))

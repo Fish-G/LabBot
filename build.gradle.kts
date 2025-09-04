@@ -18,8 +18,8 @@ dependencies {
     implementation("net.dv8tion:JDA:$jdaVersion")
     implementation("io.github.cdimascio:dotenv-kotlin:6.5.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
-
     implementation("com.fazecast:jSerialComm:2.11.0")
+    implementation("io.github.crackthecodeabhi:kreds:0.9.1")
 }
 
 
