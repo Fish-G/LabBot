@@ -6,7 +6,7 @@ plugins {
 
 application.mainClass = "com.mhu.bot.LabBotKt"
 group = "org.example"
-version = "4.0"
+version = "4.1"
 
 val jdaVersion = "5.2.2"
 
