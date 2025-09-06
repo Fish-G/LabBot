@@ -4,7 +4,6 @@ import com.fazecast.jSerialComm.SerialPort
 import commands.CommandManager
 import io.github.cdimascio.dotenv.Dotenv
 import kotlinx.coroutines.*
-import kotlinx.coroutines.time.delay
 import listeners.EventListener
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
@@ -12,7 +11,8 @@ import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.MemberCachePolicy
 import java.lang.Exception
-import java.time.Duration
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 class SerialPortNotFoundException : Exception("SerialPort Not Found")
 
@@ -44,9 +44,8 @@ class LabBot {
             println("Door Status will not launch")
         }
 
-
-        val leaderboardSaver = launch { autosaveLeaderboard(Duration.ofDays(1)) }
-
+        val scheduler = Executors.newScheduledThreadPool(1)
+        scheduler.scheduleAtFixedRate(leaderboard::saveLeaderboard, 0,1,TimeUnit.HOURS)
         println("bot ready")
     }
 
@@ -67,14 +66,6 @@ class LabBot {
                     state = false
                 }
             }
-        }
-    }
-
-    private suspend fun autosaveLeaderboard(duration: Duration) {
-        while (true) {
-            leaderboard.saveLeaderboard()
-            println("leaderboard saved")
-            delay(duration)
         }
     }
 }
