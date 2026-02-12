@@ -57,7 +57,7 @@ class LabBot {
                 var buffer: ByteArray = ByteArray(3)
                 port.readBytes(buffer, 3)
                 val output = String(buffer, Charsets.US_ASCII)[0]
-                println(output)
+                //println(output)
                 if (output == '1' && !state) { // 0 closed
                     api.presence.activity = Activity.customStatus("DOOR OPEN")
                     state = true

@@ -54,12 +54,12 @@ class CommandManager(val leaderboard: Database, val api:JDA) : ListenerAdapter()
     }
 
     fun fireLeaderboard(event: SlashCommandInteractionEvent) {
-        val s = leaderboard.leaderboards.entries.sortedByDescending { (k, v) -> v[0] }.joinToString("") { (k, v) -> "${api.retrieveUserById(k).complete().effectiveName} : ${v[0]}\n" }
+        val s = leaderboard.leaderboards.entries.sortedByDescending { (k, v) -> v[0] }.joinToString("") { (k, v) -> if (v[0] != 0) "${api.retrieveUserById(k).complete().effectiveName} : ${v[0]}\n" else ""}
         event.reply(s).queue()
     }
 
     fun skullLeaderboard(event: SlashCommandInteractionEvent) {
-        val s = leaderboard.leaderboards.entries.sortedByDescending { (k, v) -> v[1] }.joinToString("") { (k, v) -> "${api.retrieveUserById(k).complete().effectiveName} : ${v[1]}\n" }
+        val s = leaderboard.leaderboards.entries.sortedByDescending { (k, v) -> v[1] }.joinToString("") { (k, v) -> if (v[1] != 0) "${api.retrieveUserById(k).complete().effectiveName} : ${v[1]}\n" else ""}
         event.reply(s).queue()
     }
 

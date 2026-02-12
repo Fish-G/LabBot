@@ -20,7 +20,6 @@ class Database {
                 config.get("DB_PASSWORD")
             )
         }
-
     }
 
     fun loadLeaderboard() {
@@ -37,13 +36,17 @@ class Database {
     }
 
     fun saveLeaderboard() {
-        authencate()
-        runBlocking {
-            leaderboards.entries.forEach { (k, v) ->
-                client.set(k, v.joinToString(","))
+        try {
+            authencate()
+            runBlocking {
+                leaderboards.entries.forEach { (k, v) ->
+                    client.set(k, v.joinToString(","))
+                }
             }
+            println("Leaderboard Saved")
+        } catch (e: Exception) {
+            println("Failed to save leaderboard")
         }
-        println("Leaderboard Saved")
     }
 
     fun leaderboardInc(user: String, type: EmoteType) {
